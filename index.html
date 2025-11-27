@@ -3,515 +3,524 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Photo Booth</title>
+    <title>Sejarah Matematika & Sains</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* ================================= */
-        /*          CSS VARIABLES           */
-        /* ================================= */
         :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --primary-color: #bb86fc;
-            --secondary-color: #03dac6;
-            --on-surface-color: #ffffff;
-            --text-color: #e0e0e0;
-            --font-family: 'Poppins', sans-serif;
-        }
-
-        /* ================================= */
-        /*            GLOBAL STYLES          */
-        /* ================================= */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --primary-color: #4A2C2A; /* Mahogany (Cokelat Tua Kemerahan) */
+            --secondary-color: #EADDCA; /* Light Cream */
+            --accent-color: #8B4513; /* Saddle Brown */
+            --light-bg: #FDFBF7; /* Off-white background */
+            --dark-text: #212529;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
         }
 
         body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            scroll-behavior: smooth;
         }
 
-        /* Background animasi */
-        body::before {
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--dark-text) !important;
+            font-weight: 700;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            /* Ganti URL gambar latar belakang ini jika Anda memiliki gambar lain */
+            background: linear-gradient(rgba(74, 44, 42, 0.7), rgba(74, 44, 42, 0.7)), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 150px 0;
+            margin-top: -76px; /* Offset navbar height */
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Timeline Styling */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #bb86fc, #03dac6, #cf6679, #3700b3);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            opacity: 0.1;
-            z-index: -1;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* ================================= */
-        /*          MAIN CONTAINER           */
-        /* ================================= */
-        .app-container {
-            width: 90%;
-            max-width: 600px;
-            background-color: var(--surface-color);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        h1 {
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 2.2rem;
-        }
-
-        /* ================================= */
-        /*           UI SECTIONS            */
-        /* ================================= */
-        #start-screen, #camera-view, #final-result {
-            display: none;
-        }
-
-        #start-screen.active, #camera-view.active, #final-result.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Viewfinder & Film Strip */
-        .viewfinder-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4 / 5;
-            background-color: #000;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        #video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1);
-        }
-
-        #countdown {
-            position: absolute;
-            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            text-shadow: 0 0 20px rgba(3, 218, 198, 0.7);
-            display: none;
-            animation: pulse 1s ease-in-out;
+            width: 4px;
+            height: 100%;
+            background: var(--secondary-color);
+            transform: translateX(-50%);
         }
 
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        .timeline-item {
+            margin-bottom: 50px;
+            position: relative;
         }
 
-        .film-strip {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .film-strip .placeholder {
-            width: 60px;
-            height: 80px;
-            border: 2px dashed var(--primary-color);
+        .timeline-content {
+            padding: 20px;
+            background: white;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-size: 2rem;
-        }
-
-        .film-strip img {
-            width: 60px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid var(--secondary-color);
-            animation: snapIn 0.3s ease-out;
-        }
-
-        @keyframes snapIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        /* Final Result */
-        #final-strip-img {
-            width: 100%;
-            border-radius: 15px;
-            border: 5px solid var(--on-surface-color);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-        }
-
-        /* ================================= */
-        /*            BUTTONS               */
-        /* ================================= */
-        .btn {
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--bg-color);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 2px solid var(--text-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-        }
-
-        /* ================================= */
-        /*            FILTERS                */
-        /* ================================= */
-        .filter-controls {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            border: 1px solid #444;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-        }
-
-        .filter-btn.active {
-            background-color: var(--primary-color);
-            color: var(--bg-color);
-            border-color: var(--primary-color);
-        }
-
-        .filter-btn:hover:not(.active) {
-            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 45%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
-        /* Canvas untuk proses gambar, disembunyikan */
-        #canvas {
-            display: none;
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid var(--primary-color);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            left: -10px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            right: -10px;
+        }
+
+        /* Styling for images in timeline */
+        .timeline-content .figure-img {
+            max-width: 100px;
+            height: auto;
+            border: 3px solid var(--secondary-color);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            float: left;
+            margin-right: 15px;
+        }
+
+        /* Card Styling for Formulas and Branches */
+        .custom-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .custom-card .card-body {
+            padding: 2rem;
+        }
+
+        .formula {
+            background-color: var(--secondary-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 1rem 0;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        /* Quiz Section Styling */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .quiz-question {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .quiz-question.correct-answer {
+            border-color: #28a745; /* Green */
+            background-color: #e9f7ef;
+        }
+        .quiz-question.incorrect-answer {
+            border-color: #dc3545; /* Red */
+            background-color: #f9e7e7;
+        }
+        #quiz-results {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        /* Responsive for Timeline */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 60px !important;
+            }
+            .timeline-item::after {
+                left: 21px !important;
+            }
+            .timeline-content .figure-img {
+                float: none;
+                display: block;
+                margin: 0 auto 15px auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <h1>📸 Modern Photo Booth</h1>
-
-        <!-- Layar Awal -->
-        <div id="start-screen" class="active">
-            <p style="margin-bottom: 30px;">Buat 4 foto instan yang seru!</p>
-            <button id="start-btn" class="btn btn-primary">Mulai Sesi Foto</button>
-        </div>
-
-        <!-- Tampilan Kamera -->
-        <div id="camera-view">
-            <div class="viewfinder-container">
-                <video id="video" autoplay></video>
-                <div id="countdown"></div>
-            </div>
-            
-            <div class="film-strip" id="film-strip">
-                <!-- Placeholder untuk foto -->
-                <div class="placeholder">📷</div>
-                <div class="placeholder">📷</div>
-                <div class="placeholder">📷</div>
-                <div class="placeholder">📷</div>
-            </div>
-
-            <div class="filter-controls">
-                <button class="filter-btn active" data-filter="none">Normal</button>
-                <button class="filter-btn" data-filter="grayscale(100%)">B/W</button>
-                <button class="filter-btn" data-filter="sepia(100%)">Sepia</button>
-                <button class="filter-btn" data-filter="contrast(150%)">Kontras</button>
-                <button class="filter-btn" data-filter="saturate(200%)">Saturasi</button>
-                <button class="filter-btn" data-filter="hue-rotate(90deg)">Hue</button>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#beranda"><i class="fas fa-atom"></i> MathSains</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tokoh">Tokoh</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#rumus">Rumus</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cabang">Cabang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#latihan">Latihan</a></li>
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <!-- Hasil Akhir -->
-        <div id="final-result">
-            <p style="margin-bottom: 20px;">Hasil fotomu sudah jadi!</p>
-            <img id="final-strip-img" src="" alt="Final Photo Strip">
-            <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px;">
-                <button id="download-btn" class="btn btn-primary">💾 Download</button>
-                <button id="restart-btn" class="btn btn-secondary">🔄 Foto Lagi</button>
-            </div>
+    <header id="beranda" class="hero-section">
+        <div class="container">
+            <h1>Perjalanan Panjang Matematika & Sains</h1>
+            <p class="lead">Menelusuri jejak para jenius, rumus ikonik, dan cabang ilmu yang membentuk dunia kita.</p>
         </div>
-    </div>
+    </header>
 
-    <!-- Canvas untuk pemrosesan gambar, tidak terlihat -->
-    <canvas id="canvas"></canvas>
+    <main>
+        <section id="tokoh" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Tokoh-Tokoh Besar</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Pythagoras_by_J._Augustus_Knapp.jpg/200px-Pythagoras_by_J._Augustus_Knapp.jpg" alt="Pythagoras" class="figure-img img-fluid rounded">
+                            <h5>Pythagoras (c. 570 – c. 495 SM)</h5>
+                            <p>Seorang matematikawan dan filsuf Yunani kuno, paling dikenal melalui **Teorema Pythagoras**. Ia mendirikan aliran Pythagoreanisme yang percaya bahwa segala sesuatu di alam semesta dapat dijelaskan dengan angka.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Euclid_from_The_School_of_Athens_by_Raphael.jpg/200px-Euclid_from_The_School_of_Athens_by_Raphael.jpg" alt="Euclid" class="figure-img img-fluid rounded">
+                            <h5>Euclid (fl. 300 SM)</h5>
+                            <p>Sering disebut "**Bapak Geometri**". Karyanya, *Elemen*, menjadi salah satu karya paling berpengaruh dalam sejarah matematika dan menjadi buku teks standar geometri selama berabad-abad.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Statue_of_al-Khwarizmi_at_Technische_Universit%C3%A4t_Berlin.jpg/220px-Statue_of_al-Khwarizmi_at_Technische_Universit%C3%A4t_Berlin.jpg" alt="Al-Khwarizmi" class="figure-img img-fluid rounded">
+                            <h5>Muhammad ibn Musa al-Khwarizmi (c. 780 – c. 850)</h5>
+                            <p>Seorang matematikawan, astronom, dan geograf Persia. Karyanya memperkenalkan sistem bilangan desimal dan "**al-jabr**" (aljabar) ke dunia Barat. Kata "algoritma" berasal dari namanya.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Sir_Isaac_Newton_by_Sir_Godfrey_Kneller%2C_Bt.jpg/220px-Sir_Isaac_Newton_by_Sir_Godfrey_Kneller%2C_Bt.jpg" alt="Isaac Newton" class="figure-img img-fluid rounded">
+                            <h5>Isaac Newton (1643 – 1727)</h5>
+                            <p>Salah satu ilmuwan paling berpengaruh sepanjang masa. Ia merumuskan hukum gerak, hukum gravitasi universal, dan **kalkulus infinitesimal**. Kontribusinya menjadi fondasi fisika klasik.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rumus" class="section">
+            <div class="container">
+                <h2 class="section-title">Rumus-Rumus Ikonik</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card custom-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Teorema Pythagoras</h5>
+                                <div class="formula">
+                                    a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>
+                                </div>
+                                <p class="card-text">Dalam segitiga siku-siku, kuadrat panjang sisi miring (**c**) sama dengan jumlah kuadrat panjang kedua sisi lainnya (**a** dan **b**).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card custom-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Persamaan Massa-Energi</h5>
+                                <div class="formula">
+                                    E = mc<sup>2</sup>
+                                </div>
+                                <p class="card-text">Rumus terkenal Albert Einstein yang menunjukkan kesetaraan antara massa (**m**) dan energi (**E**), dengan **c** adalah kecepatan cahaya.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card custom-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Rumus Kuadrat</h5>
+                                <div class="formula">
+                                    x = (-b ± √(b<sup>2</sup> - 4ac)) / 2a
+                                </div>
+                                <p class="card-text">Digunakan untuk menemukan akar-akar dari persamaan kuadrat dalam bentuk **ax<sup>2</sup> + bx + c = 0**, di mana **a** tidak sama dengan nol.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cabang" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Cabang-Cabang Matematika</h2>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card custom-card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-superscript fa-3x mb-3" style="color: var(--primary-color);"></i>
+                                <h5 class="card-title">Aljabar</h5>
+                                <p class="card-text">Cabang matematika yang mempelajari simbol dan aturan untuk memanipulasi simbol-simbol tersebut. Ini adalah fondasi bagi hampir semua cabang matematika lanjutan.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card custom-card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-shapes fa-3x mb-3" style="color: var(--accent-color);"></i>
+                                <h5 class="card-title">Geometri</h5>
+                                <p class="card-text">Mempelajari bentuk, ukuran, posisi relatif gambar, dan sifat-sifat ruang. Geometri adalah salah satu ilmu matematika tertua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card custom-card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-chart-area fa-3x mb-3" style="color: var(--primary-color);"></i>
+                                <h5 class="card-title">Kalkulus</h5>
+                                <p class="card-text">Studi tentang perubahan kontinyu. Kalkulus memiliki dua cabang utama: diferensial (mengenai laju perubahan) dan integral (mengenai akumulasi).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card custom-card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-chart-pie fa-3x mb-3" style="color: var(--accent-color);"></i>
+                                <h5 class="card-title">Statistika</h5>
+                                <p class="card-text">Ilmu yang berkaitan dengan pengumpulan, analisis, interpretasi, dan presentasi data. Statistika sangat penting dalam berbagai bidang, dari sains hingga bisnis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="latihan" class="section">
+            <div class="container">
+                <h2 class="section-title">Uji Pengetahuan Anda 📝</h2>
+                <div class="quiz-container">
+                    <form id="mathQuiz">
+                        <div class="quiz-question mb-4">
+                            <p><strong>Soal 1: Teorema Pythagoras</strong></p>
+                            <p>Sebuah segitiga siku-siku memiliki sisi tegak (a) = 3 dan sisi datar (b) = 4. Berapakah panjang sisi miring (c)?</p>
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="q1" placeholder="Masukkan jawaban angka">
+                                <span class="input-group-text">satuan</span>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question mb-4">
+                            <p><strong>Soal 2: Persamaan Massa-Energi</strong></p>
+                            <p>Dalam rumus $E = mc^2$, simbol **c** mewakili apa?</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" id="q2a" value="A">
+                                <label class="form-check-label" for="q2a">A. Massa benda</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" id="q2b" value="B">
+                                <label class="form-check-label" for="q2b">B. Kecepatan cahaya</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" id="q2c" value="C">
+                                <label class="form-check-label" for="q2c">C. Energi kinetik</label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-lg" style="background-color: var(--primary-color); color: white;">
+                                <i class="fas fa-check-circle"></i> Selesai & Cek Hasil
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div id="quiz-results" class="alert mt-4 text-center" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 MathSains Journey. Dibuat dengan Bootstrap & Semangat Ilmu Pengetahuan.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Elemen DOM
-            const startScreen = document.getElementById('start-screen');
-            const cameraView = document.getElementById('camera-view');
-            const finalResult = document.getElementById('final-result');
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-            const countdownEl = document.getElementById('countdown');
-            const filmStrip = document.getElementById('film-strip');
-            const finalStripImg = document.getElementById('final-strip-img');
+        document.getElementById('mathQuiz').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-            // Tombol
-            const startBtn = document.getElementById('start-btn');
-            const downloadBtn = document.getElementById('download-btn');
-            const restartBtn = document.getElementById('restart-btn');
-            const filterBtns = document.querySelectorAll('.filter-btn');
+            const answers = {
+                q1: 5, // Berasal dari 3^2 + 4^2 = 25. Akar kuadrat dari 25 adalah 5.
+                q2: "B" // Kecepatan cahaya
+            };
+            
+            let score = 0;
+            const form = e.target;
+            const resultsDiv = document.getElementById('quiz-results');
+            
+            // Reset state
+            resultsDiv.style.display = 'none';
+            resultsDiv.classList.remove('alert-success', 'alert-danger', 'alert-warning');
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('correct-answer', 'incorrect-answer'));
 
-            // State Aplikasi
-            let stream = null;
-            let capturedImages = [];
-            const TOTAL_PHOTOS = 4;
-            let currentFilter = 'none';
-            let isSessionActive = false;
-
-            // --- EVENT LISTENERS ---
-            startBtn.addEventListener('click', startSession);
-            downloadBtn.addEventListener('click', downloadStrip);
-            restartBtn.addEventListener('click', resetApp);
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentFilter = btn.dataset.filter;
-                    video.style.filter = currentFilter;
-                });
-            });
-
-            // --- FUNGSI-FUNGSI UTAMA ---
-            async function startSession() {
-                if (isSessionActive) return;
-                isSessionActive = true;
-                
-                startScreen.classList.remove('active');
-                cameraView.classList.add('active');
-                
-                try {
-                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                    video.srcObject = stream;
-                    // Tunggu video dimuat sebelum memulai sesi
-                    video.onloadedmetadata = () => {
-                        captureNextPhoto();
-                    };
-                } catch (err) {
-                    console.error("Error accessing webcam:", err);
-                    alert("Tidak dapat mengakses webcam. Pastikan izin telah diberikan.");
-                    resetApp();
+            // Check Question 1 (Number Input)
+            const q1Input = form.elements['q1'];
+            const q1QuestionDiv = q1Input.closest('.quiz-question');
+            if (parseInt(q1Input.value) === answers.q1) {
+                score++;
+                q1QuestionDiv.classList.add('correct-answer');
+            } else {
+                q1QuestionDiv.classList.add('incorrect-answer');
+            }
+            
+            // Check Question 2 (Radio Button)
+            const q2Inputs = form.elements['q2'];
+            let q2Value = null;
+            for(let i = 0; i < q2Inputs.length; i++) {
+                if (q2Inputs[i].checked) {
+                    q2Value = q2Inputs[i].value;
+                    break;
                 }
             }
+            
+            const q2QuestionDiv = document.querySelector('.quiz-question:nth-child(2)');
 
-            function captureNextPhoto() {
-                if (capturedImages.length >= TOTAL_PHOTOS) {
-                    processFinalStrip();
-                    return;
-                }
-
-                // Tampilkan countdown
-                showCountdown(3, () => {
-                    // Ambil foto setelah countdown selesai
-                    takePhoto();
-                });
+            if (q2Value === answers.q2) {
+                score++;
+                q2QuestionDiv.classList.add('correct-answer');
+            } else if (q2Value !== null) {
+                q2QuestionDiv.classList.add('incorrect-answer');
             }
 
-            function showCountdown(count, callback) {
-                countdownEl.style.display = 'block';
-                countdownEl.innerText = count;
-                
-                if (count > 0) {
-                    setTimeout(() => showCountdown(count - 1, callback), 1000);
-                } else {
-                    countdownEl.innerText = 'CHEESE!';
-                    setTimeout(() => {
-                        countdownEl.style.display = 'none';
-                        callback();
-                    }, 500);
-                }
+
+            // Display Results
+            let totalQuestions = Object.keys(answers).length;
+            let percentage = (score / totalQuestions) * 100;
+            
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = `Anda berhasil menjawab **${score}** dari **${totalQuestions}** soal. Skor Anda: **${percentage.toFixed(0)}%**`;
+            
+            if (score === totalQuestions) {
+                resultsDiv.classList.add('alert-success');
+            } else if (score > 0) {
+                resultsDiv.classList.add('alert-warning');
+            } else {
+                resultsDiv.classList.add('alert-danger');
             }
 
-            function takePhoto() {
-                // Efak kilat
-                video.style.opacity = '0';
-                setTimeout(() => video.style.opacity = '1', 200);
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
 
-                // Siapkan canvas untuk menangkap gambar
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                
-                // Terapkan filter dan gambar ke canvas
-                ctx.filter = currentFilter;
-                ctx.drawImage(video, 0, 0);
-
-                // Simpan hasil gambar
-                const imageData = canvas.toDataURL('image/png');
-                capturedImages.push(imageData);
-
-                // Update UI film strip
-                updateFilmStrip();
-
-                // Lanjut ke foto berikutnya
-                setTimeout(() => captureNextPhoto(), 1000); // Jeda 1 detik
-            }
-
-            function updateFilmStrip() {
-                const placeholders = filmStrip.querySelectorAll('.placeholder');
-                const photoIndex = capturedImages.length - 1;
-                if (placeholders[photoIndex]) {
-                    placeholders[photoIndex].outerHTML = `<img src="${capturedImages[photoIndex]}" alt="Captured ${photoIndex + 1}">`;
-                }
-            }
-
-            function processFinalStrip() {
-                // Hentikan stream kamera
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                }
-
-                // Sembunyikan tampilan kamera, tampilkan hasil
-                cameraView.classList.remove('active');
-                finalResult.classList.add('active');
-
-                // Siapkan canvas untuk strip final
-                const STRIP_WIDTH = 600;
-                const STRIP_HEIGHT = 1200;
-                canvas.width = STRIP_WIDTH;
-                canvas.height = STRIP_HEIGHT;
-
-                // Gambar latar belakang
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, STRIP_WIDTH, STRIP_HEIGHT);
-
-                // Gambar judul
-                ctx.fillStyle = '#121212';
-                ctx.font = 'bold 50px Poppins';
-                ctx.textAlign = 'center';
-                ctx.fillText('MODERN BOOTH', STRIP_WIDTH / 2, 80);
-
-                // Gambar 4 foto
-                const photoWidth = 250;
-                const photoHeight = (photoWidth / video.videoWidth) * video.videoHeight;
-                const spacing = (STRIP_WIDTH - (2 * photoWidth)) / 3;
-                
-                capturedImages.forEach((imgSrc, index) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const x = index % 2 === 0 ? spacing : spacing * 2 + photoWidth;
-                        const y = 120 + Math.floor(index / 2) * (photoHeight + 30);
-                        
-                        // Gambar border putih
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillRect(x - 10, y - 10, photoWidth + 20, photoHeight + 20);
-                        
-                        // Gambar foto
-                        ctx.drawImage(img, x, y, photoWidth, photoHeight);
-                    };
-                    img.src = imgSrc;
-                });
-
-                // Tambahkan teks footer
-                setTimeout(() => { // Beri jeda agar gambar ter-render sempurna
-                    ctx.fillStyle = '#777';
-                    ctx.font = '25px Poppins';
-                    ctx.fillText(new Date().toLocaleString('id-ID'), STRIP_WIDTH / 2, STRIP_HEIGHT - 40);
-                    
-                    // Tampilkan hasil di elemen img
-                    finalStripImg.src = canvas.toDataURL('image/png');
-                }, 500);
-            }
-
-            function downloadStrip() {
-                const link = document.createElement('a');
-                link.href = finalStripImg.src;
-                link.download = `modern-photobooth-${Date.now()}.png`;
-                link.click();
-            }
-
-            function resetApp() {
-                isSessionActive = false;
-                capturedImages = [];
-                
-                // Reset UI
-                startScreen.classList.add('active');
-                cameraView.classList.remove('active');
-                finalResult.classList.remove('active');
-                
-                // Reset film strip
-                filmStrip.innerHTML = `
-                    <div class="placeholder">📷</div>
-                    <div class="placeholder">📷</div>
-                    <div class="placeholder">📷</div>
-                    <div class="placeholder">📷</div>
-                `;
-                
-                // Reset video
-                video.srcObject = null;
-            }
         });
     </script>
 </body>
